@@ -389,11 +389,19 @@ class csr_matrix(_cs_matrix, IndexMixin):
             if isinstance(sl, slice):
                 if sl.step not in (1, None):
                     raise ValueError('slicing with step != 1 not supported')
+
                 i0, i1 = sl.start, sl.stop
+
+                if i0 is not None and not isintlike(i0):
+                    raise TypeError('cannot slice with {}'.format(i0))
+
                 if i0 is None:
                     i0 = 0
                 elif i0 < 0:
                     i0 = num + i0
+
+                if i1 is not None and not isintlike(i1):
+                    raise TypeError('cannot slice with {}'.format(i1))
 
                 if i1 is None:
                     i1 = num

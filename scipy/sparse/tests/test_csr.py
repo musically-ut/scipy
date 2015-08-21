@@ -1,7 +1,7 @@
 from __future__ import division, print_function, absolute_import
 
 import numpy as np
-from numpy.testing import assert_array_almost_equal, run_module_suite, assert_
+from numpy.testing import assert_array_almost_equal, run_module_suite, assert_, assert_raises
 from scipy.sparse import csr_matrix
 
 
@@ -57,6 +57,20 @@ def test_csr_getcol():
 
         assert_array_almost_equal(arr_col, csr_col.toarray())
         assert_(type(csr_col) is csr_matrix)
+
+
+def test_csr_indexerror():
+    N = 10
+    Xcsr = csr_matrix((N, N))
+    expectedError = IndexError
+
+    try:
+        # This raises a type-error in python 3
+        (1,) < 1
+    except TypeError:
+        expectedError = TypeError
+
+    assert_raises(expectedError, Xcsr[:(1,)])
 
 
 if __name__ == "__main__":
